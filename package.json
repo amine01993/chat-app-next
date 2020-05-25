@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "node back/server.js",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "heroku-postbuild": "npm install && npm run dev"
   },
   "dependencies": {
     "bcrypt": "^4.0.1",

@@ -36,7 +36,6 @@ export function getConnectionStatus(channel_uuid, lastConnection) {
 }
 
 export const unReadMessages = []
-export const uploads = {}
 
 export function displayDate(dm) {
     const d = moment(new Date())
