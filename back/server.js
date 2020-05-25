@@ -216,13 +216,6 @@ app.prepare().then(() => {
     server.use(passport.initialize())
     server.use(passport.session())
 
-    // server.get('/materialize.css', (req, res, next) => {
-    //     return res.sendFile(path.resolve(__dirname + '/../node_modules/materialize-css/dist/css/materialize.css'))
-    // })
-    // server.get('/materialize.js', (req, res, next) => {
-    //     return res.sendFile(path.resolve(__dirname + '/../node_modules/materialize-css/dist/js/materialize.js'))
-    // })
-
     server.get('/', (req, res) => {
         return app.render(req, res, req.path, {name: 'John Doe'})
     })
@@ -231,7 +224,6 @@ app.prepare().then(() => {
     require('./routes/profile')(server, app)
 
     server.get('/chat', auth.isAuthorized, (req, res) => {
-        // res.render('chat.html', {user: req.user})
         return app.render(req, res, '/chat', {id: req.user.id})
     })
 
@@ -240,13 +232,13 @@ app.prepare().then(() => {
         return handle(req, res)
     })
       
-    server.listen(3000, (err) => {
+    server.listen(80, (err) => {
         if (err) throw err
-        console.log('> Ready on http://localhost:3000')
+        console.log('> Ready on http://localhost:80')
     })
 
-    http.listen(3030, () => {
-        console.log('listening on (socket.io) *:3030')
+    http.listen(81, () => {
+        console.log('listening on (socket.io) *:81')
     })
 
     io.on('connection', async (socket) => {
@@ -514,19 +506,6 @@ app.prepare().then(() => {
             if(channelE) {
                 return
             }
-
-            // // if the channel being updated is a default => add a new default
-            // let defaultChannel = null
-            // if(channel.users.length == 2) {
-            //     defaultChannel = {
-            //         channel_uuid: `id_${uuidv4()}`,
-            //         body: null,
-            //         sender_id: null,
-            //         created_at: null,
-            //         users: channel.users,
-            //         unread_count: 0
-            //     }
-            // }
 
             const messages = await db.select('id')
             .from('messages')
