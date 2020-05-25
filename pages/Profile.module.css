@@ -1,0 +1,17 @@
+
+.profile-container {
+    width: 450px;
+    margin: 45px auto;
+}
+
+.profile-img {
+    width: 350px;
+    margin: auto;
+    display: block;
+    cursor: pointer;
+}
+
+.raw-profile-img-container {
+    text-align: center;
+    margin-bottom: 0;
+}

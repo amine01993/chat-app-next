@@ -1,0 +1,67 @@
+.chat-container {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: calc(100vw - 320px) 320px;
+}
+
+.chat-part {
+    height: 100%;
+}
+
+.chat-card-content {
+    overflow-y: scroll;
+}
+
+.chat-app-content {
+    height: 88px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.card-content {
+    position: relative;
+    z-index: 1;
+    margin-right: 17px;
+}
+
+.card-title {
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: calc(100% - 122px);
+}
+
+.connection-status {
+    font-size: 14px;
+}
+
+.chat-input {
+    border-top: 1px solid #e0e0e0;
+}
+
+.chat-input-bar {
+    display: grid;
+    grid-template-columns: 1fr;
+    overflow-y: scroll;
+}
+
+.chat-input-actions {
+    text-align: right;
+}
+
+.editable {
+    border: 0;
+    margin: 0;
+    padding: 10px;
+    line-height: 24px;
+    max-height: 180px;
+    width: 100%;
+    word-break: break-all;
+    overflow-y: scroll;
+}
+
+.card {
+    margin-top: 0;
+    margin-bottom: 0;
+    height: 100%;
+}
