@@ -1,4 +1,4 @@
-require('../helpers/configs')
+// require('../helpers/configs')
 
 const express = require('express')
 const server = express()
