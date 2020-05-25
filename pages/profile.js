@@ -153,7 +153,6 @@ export default class Profile extends React.Component {
     }
 
     render() {
-        // console.log(styles)
         const {profilePicture, sex, firstName, lastName, nameEdit, modalOpen} = this.state
         const profileImgSrc = profilePicture != null && profilePicture != '' 
             ? `img/${profilePicture}`

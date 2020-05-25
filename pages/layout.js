@@ -12,14 +12,12 @@ export default function Layout({title, children}) {
                 {/* <link rel="icon" href="icons/favicon.ico" type="image/x-icon" /> */}
                 <link rel="stylesheet" href="css/index.css" />
                 <link rel="stylesheet" href="css/chat.css" />
-                {/* <link rel="stylesheet" href="materialize.css" /> */}
                 <link rel="stylesheet" href="materialize/dist/css/materialize.css" />
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
             </Head>
     
             {children}
             
-            {/* <script src="materialize.js"></script> */}
             <script src="materialize/dist/js/materialize.js"></script>
         </React.Fragment>
     )

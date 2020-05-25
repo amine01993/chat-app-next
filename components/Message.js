@@ -1,8 +1,6 @@
 
 import React from 'react'
 import moment from 'moment'
-// import {Tooltip} from 'react-materialize'
-// import styles from './Message.module.css'
 import {getChatPicture, prev} from '../public/js/utility'
 
 export default class Channel extends React.Component {
@@ -14,7 +12,6 @@ export default class Channel extends React.Component {
 
     componentDidMount() {
         M.Tooltip.init(this.message.current, {})
-        // M.Tooltip.init(messageElem.querySelector('.message-files'), {})
     }
 
     render() {
@@ -22,10 +19,9 @@ export default class Channel extends React.Component {
         
         const txtMsgAttr = {}, fileListAttr = {}
 
-        let msgClass = ''//, imgClass = styles.circle
+        let msgClass = ''
         if(user_id == connectedUserId) {
             msgClass = ' right'
-            // imgClass += ' ' + styles.rightCircle
             txtMsgAttr['data-position'] = 'left'
             fileListAttr['data-position'] = 'left'
         }
@@ -35,7 +31,6 @@ export default class Channel extends React.Component {
         }
 
         let imgElem = ''
-        // console.log(prev.user_id, user_id)
         if(user_id == prev.user_id) {
             msgClass += ' coalesce'
         }

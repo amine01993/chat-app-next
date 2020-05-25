@@ -15,9 +15,7 @@ import ChatDate from '../components/ChatDate'
 import AttachmentUpload from '../components/AttachmentUpload'
 import AttachmentFilePreview from '../components/AttachmentFilePreview'
 import AttachmentImagePreview from '../components/AttachmentImagePreview'
-import {unReadMessages, prev, setConnectionStatus, getConnectionStatus, uploads} from '../public/js/utility'
-
-// const socket = io('http://localhost');
+import {unReadMessages, prev, setConnectionStatus, getConnectionStatus} from '../public/js/utility'
 
 export default class Chat extends React.Component {
 
@@ -37,7 +35,6 @@ export default class Chat extends React.Component {
             users: [],
             selected_channel_uuid: null,
             connectionStatus: '',
-            // messageTxt: '',
             addGroupAction: false,
             addGroupContainer: false,
             autoCompleteUsers: {},
@@ -48,7 +45,6 @@ export default class Chat extends React.Component {
 
         this.handleChannelActive = this.handleChannelActive.bind(this)
         this.handleMessageSend = this.handleMessageSend.bind(this)
-        // this.handleMessageTxt = this.handleMessageTxt.bind(this)
         this.handleAddGroup = this.handleAddGroup.bind(this)
         this.handleAddUsers = this.handleAddUsers.bind(this)
         this.handleUploadFile = this.handleUploadFile.bind(this)
@@ -73,19 +69,6 @@ export default class Chat extends React.Component {
 
         this.ac_users = {}
         this.ac_users_selected = []
-        // const channelsList = document.getElementById('channels-list')
-        // const chatCard = document.getElementById('chat-card')
-        // const chatWith = chatCard.querySelector('.card-title')
-        // const chatHistoryList = chatCard.querySelector('.chat-wrapper')
-        // const chatContent = chatCard.querySelector('.chat-content')
-        // const addGroupContainer = chatCard.querySelector('.add-group-container')
-        // const addGroupAction = document.getElementById('add-group-action')
-        // const msgForm = chatCard.querySelector('#message-form')
-        // const msgSend = chatCard.querySelector('#send-message')
-        // const msgInput = chatCard.querySelector('#message-input')
-        // const uploadFile = chatCard.querySelector('#upload-file')
-        // const uploadFileInput = document.getElementById('upload-file-input')
-        // const attachmentFiles = chatCard.querySelector('.message-attachments-list')
     }
 
     handleChannelActive(channel_uuid, users) {
@@ -95,8 +78,6 @@ export default class Chat extends React.Component {
         }
         this.setState({channels})
 
-        // prev.user_id = null
-
         this.socket.emit('chat', {
             userIds: users.map(u => u.user_id),
             channel_uuid,
@@ -104,22 +85,11 @@ export default class Chat extends React.Component {
     }
 
     handleMessageSend() {
-        // event.preventDefault()
-        // console.log('socket client emit on ', selected_channel_uuid, msgInput.innerHTML, uploads)
 
         const {selected_channel_uuid, attachmentFiles} = this.state
         const messageTxt = this.messageInput.current.innerHTML.trim()
 
         let uploadsOver = true, file_ids = []
-        // for (const [, elem] of Object.entries(uploads)) {
-        //     if (elem.hasOwnProperty('temp')) {
-        //         uploadsOver = false
-        //         break
-        //     }
-        //     else {
-        //         file_ids.push(elem.dataset.id)
-        //     }
-        // }
         for(const file of attachmentFiles) {
             if(file.progress < 100) {
                 uploadsOver = false
@@ -142,8 +112,6 @@ export default class Chat extends React.Component {
             this.setState({
                 attachmentFiles: []
             })
-            // attachmentFiles.innerHTML = ''
-            // for (var name in uploads) delete uploads[name]
             this.resizeChatLayout()
         }
 
@@ -183,7 +151,6 @@ export default class Chat extends React.Component {
         }
         channel.unread_count = 0
         
-        // prev.day = null
         unReadMessages.splice(0)
         
         this.setState({
@@ -211,11 +178,9 @@ export default class Chat extends React.Component {
     }
 
     updateAddGroup(acUsers) {
-        // console.log('updateAddGroup', acUsers)
         this.ac_users = acUsers.reduce((acc, val) => Object.assign(acc, {[val.username]: val.id}), {})
 
         this.setState(state => ({
-            // channels: defaultChannel ? [...state.channels, defaultChannel] : state.channels,
             autoCompleteUsersSelected: [],
             addGroupAction: true, 
             autoCompleteUsers: acUsers.reduce((acc, val) => Object.assign(acc, {[val.username]: null}), {})
@@ -233,7 +198,6 @@ export default class Chat extends React.Component {
             return
 
         const users = this.ac_users_selected.map(c => this.ac_users[c.tag])
-        // console.log(users)
         this.socket.emit('addUsersToChannel', {
             users,
             channel_uuid: this.state.selected_channel_uuid
@@ -250,11 +214,7 @@ export default class Chat extends React.Component {
             console.log('true')
             const uploadIds = this.uploader.upload(this.uploadFileInput.current, {
                 data: { /* Arbitrary data... */ }
-            })
-            // setTimeout(function() {
-            //     uploader.abort(uploadIds[0]);
-            //     console.log(uploader.getUploadInfo());
-            // }, 1000);            
+            })           
         }
     }
 
@@ -336,13 +296,6 @@ export default class Chat extends React.Component {
         this.uploader.on('start', function(fileInfo) {
             console.log('Start uploading', fileInfo)
 
-            // const attachmentUpload = parse(renderAttachmentUpload(fileInfo.name))
-
-            // uploads[fileInfo.uploadId] = {
-            //     elem: attachmentUpload,
-            //     temp: true
-            // }
-
             _this.setState(state => {
                 const newAttachmentFiles = state.attachmentFiles.slice()
                 newAttachmentFiles.push({
@@ -353,12 +306,11 @@ export default class Chat extends React.Component {
                 return { attachmentFiles: newAttachmentFiles }
             })
 
-            // attachmentFiles.appendChild(attachmentUpload)
             _this.resizeChatLayout()
         })
         this.uploader.on('stream', function(fileInfo) {
             console.log('Streaming... sent ' + fileInfo.sent + ' bytes.')
-            // uploads[fileInfo.uploadId].elem.querySelector('.determinate').style.width = `${fileInfo.sent / fileInfo.size}%`
+
             _this.setState(state => {
                 const newAttachmentFiles = state.attachmentFiles.slice()
                 const attachmentFileIndex = newAttachmentFiles.findIndex(af => af.uploadId == fileInfo.uploadId)
@@ -372,9 +324,6 @@ export default class Chat extends React.Component {
         this.uploader.on('complete', function(fileInfo) {
             console.log('Upload Complete', fileInfo)
 
-            // uploads[fileInfo.uploadId].elem.querySelector('.determinate').style.width = `100%`
-            // uploads[fileInfo.name] = uploads[fileInfo.uploadId]
-            // delete uploads[fileInfo.uploadId]
             _this.setState(state => {
                 const newAttachmentFiles = state.attachmentFiles.slice()
                 const attachmentFileIndex = newAttachmentFiles.findIndex(af => af.uploadId == fileInfo.uploadId)
@@ -390,7 +339,7 @@ export default class Chat extends React.Component {
         })
         this.uploader.on('abort', function(fileInfo) {
             console.log('Aborted: ', fileInfo)
-            // delete uploads[fileInfo.uploadId]
+
             _this.setState(state => {
                 const newAttachmentFiles = state.attachmentFiles.slice()
                 const attachmentFileIndex = newAttachmentFiles.findIndex(af => af.uploadId == fileInfo.uploadId)
@@ -468,7 +417,7 @@ export default class Chat extends React.Component {
 
     updateMessageRead() {
         const readMsgs = []
-        // for(const msgElem of chatHistoryList.querySelectorAll('.chat-message')) {
+
         for(const msg of this.state.messages) {
             const mid = this.isMessageRead(msg)
             if(mid) readMsgs.push(mid)
@@ -480,18 +429,6 @@ export default class Chat extends React.Component {
     }
 
     uploadCompleteEvent({id, imageUrl, originalFileName, fileName, type}) {
-        // show preview (images, other files)
-        // let attachmentPreview
-        // if(/^image/i.test(type)) {
-        //     attachmentPreview = parse(renderAttachmentImagePreview({id, imageUrl, originalFileName}))
-        // }
-        // else {
-        //     attachmentPreview = parse(renderAttachmentFilePreview({id, originalFileName}))
-        // }
-
-        // replace progress by preview
-        // attachmentFiles.replaceChild(attachmentPreview, uploads[fileName].elem)
-        // uploads[fileName] = attachmentPreview
 
         this.setState(state => {
             const newAttachmentFiles = state.attachmentFiles.slice()
@@ -522,28 +459,13 @@ export default class Chat extends React.Component {
         })
 
         this.resizeChatLayout()
-
-        // set remove file event
-        // attachmentPreview.querySelector('.close-preview').addEventListener('click', event => {
-        //     console.log('close preview', originalFileName)
-        //     attachmentPreview.style.opacity = .75
-        //     socket.emit('deleteAttachment', {id})
-        // })
     }
 
     deletedAttachmentEvent({id, name}) {
-        // if(uploads.hasOwnProperty(name)) {
-        //     attachmentFiles.removeChild(uploads[name])
-        //     delete uploads[name]
-        //     // resizeChatLayout()
-        // }
+
         this.setState(state => {
             const newAttachmentFiles = state.attachmentFiles.slice()
             const attachmentFileIndex = newAttachmentFiles.findIndex(af => af.id == id)
-            // const newAttachmentFile = {
-            //     ...newAttachmentFiles[attachmentFileIndex], 
-            //     ...{id, imageUrl, originalFileName, type}
-            // }
             newAttachmentFiles.splice(attachmentFileIndex, 1)
             return {
                 attachmentFiles: newAttachmentFiles
@@ -637,11 +559,9 @@ export default class Chat extends React.Component {
         for(const attachmentFile of attachmentFiles) {
             if(attachmentFile.hasOwnProperty('type')) {
                 if(/^image/i.test(attachmentFile.type)) {
-                    // attachmentPreview = parse(renderAttachmentImagePreview({id, imageUrl, originalFileName}))
                     attachmentFilesList.push(<AttachmentImagePreview key={attachmentFile.uploadId} {...attachmentFile} />)
                 }
                 else {
-                    // attachmentPreview = parse(renderAttachmentFilePreview({id, originalFileName}))
                     attachmentFilesList.push(<AttachmentFilePreview key={attachmentFile.uploadId} {...attachmentFile} />)
                 }
             }
@@ -675,31 +595,16 @@ export default class Chat extends React.Component {
                                         title="Add other users to this conversation">
                                         <i className="material-icons">group_add</i>
                                     </a>
-                                    {/* <Button
-                                        className="blue"
-                                        floating
-                                        icon={<Icon>group_add</Icon>}
-                                        large
-                                        node="button"
-                                        waves="light"
-                                    /> */}
                                 </div>
                                 <div className='card-content chat-content custom-scrollbar' ref={this.chatContent}>
                                     <div className={`add-group-container z-depth-1 ${addGroupContainer ? '' : 'hide'}`}>
                                         {/* <!-- Customizable input  --> */}
-                                        {/* <div className="chips chips-placeholder chips-autocomplete">
-                                            <input className="custom-class" />
-                                        </div> */}
                                         <Chip
                                             data={autoCompleteUsersSelected}
-                                            // close={false}
-                                            // closeIcon={<Icon className="close">close</Icon>}
                                             options={{
                                                 autocompleteOptions: {
                                                     data: autoCompleteUsers,
-                                                    // limit: Infinity,
                                                     minLength: 1,
-                                                    // onAutocomplete: function noRefCheck(){}
                                                 },
                                                 onChipAdd() {
                                                     _this.ac_users_selected = this.chipsData;
@@ -770,7 +675,6 @@ export default class Chat extends React.Component {
                         ref={this.uploadFileInput} id="upload-file-input" multiple />
                 </div>
             </Layout>
-            // <input type="hidden" value="{{ user.id }}" id="connected-user">
         )
     }
 }
