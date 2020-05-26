@@ -231,10 +231,11 @@ app.prepare().then(() => {
     server.get('*', (req, res) => {
         return handle(req, res)
     })
-      
-    server.listen(443, (err) => {
+    
+    const PORT = process.env.PORT || 3000;
+    server.listen(PORT, (err) => {
         if (err) throw err
-        console.log('> Ready on http://localhost:80')
+        console.log('> Ready on http://localhost:' + PORT)
     })
 
     http.listen(444, () => {
