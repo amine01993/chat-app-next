@@ -232,12 +232,12 @@ app.prepare().then(() => {
         return handle(req, res)
     })
       
-    server.listen(80, (err) => {
+    server.listen(443, (err) => {
         if (err) throw err
         console.log('> Ready on http://localhost:80')
     })
 
-    http.listen(81, () => {
+    http.listen(444, () => {
         console.log('listening on (socket.io) *:81')
     })
 

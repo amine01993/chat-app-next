@@ -507,7 +507,7 @@ export default class Chat extends React.Component {
     }
 
     componentDidMount() {
-        this.socket = io('https://chat-app-next.herokuapp.com:81')
+        this.socket = io('https://chat-app-next.herokuapp.com:444')
         this.uploader = new SocketIOFileClient(this.socket)
 
         this.socket.on('channels', this.channelsEvent)
